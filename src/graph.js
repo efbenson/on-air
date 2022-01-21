@@ -32,12 +32,12 @@ module.exports = {
       .api('/me/photo/$value')
       .getStream()
       .then((stream) => {
-        let writeStream = fs.createWriteStream(`${path}/${filename}`);
+        let writeStream = fs.createWriteStream(`${path}${filename}`);
         stream.pipe(writeStream).on("error", (err) => {
           throw err;
         });
         writeStream.on("finish", () => {
-          console.log(`Wrote user photo to '${path}/${filename}'`);
+          console.log(`Wrote user photo to '${path}${filename}'`);
         });
         writeStream.on("error", (err) => {
           throw err;

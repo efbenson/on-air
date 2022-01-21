@@ -48,6 +48,8 @@ passport.deserializeUser(function(id, done) {
 // Callback function called once the sign-in is complete
 // and an access token has been obtained
 async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
+
+  console.log('I am in')
   if (!profile.oid) {
     return done(new Error("No OID found in user profile."), null);
   }
@@ -95,8 +97,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var presenceRouter = require('./routes/presence');
-var bulbRouter = require('./routes/bulb');
+var homeAssistantRouter = require('./routes/homeAssistant');
 var control = require('./routes/control');
+const homeAssistant = require('./routes/homeAssistant');
 
 var app = express();
 
@@ -185,7 +188,7 @@ app.use(async function(req, res, next) {
       if (!avatar) {
           try {
               var avatarFilename = 'avatar.jpg';
-              var avatarPath = './src/public/';
+              var avatarPath = './public/';
               avatar = await graph.getPhoto(accessToken, req, avatarPath, avatarFilename);
           } catch (err) {
               console.error(`Failed to get photo: ${err}`);
@@ -209,7 +212,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/presence', presenceRouter);
-app.use('/bulb', bulbRouter);
+app.use('/homeAssistant', homeAssistantRouter);
 app.use('/control', control)
 
 // catch 404 and forward to error handler

@@ -2,6 +2,7 @@ require('log-timestamp');
 var express = require('express');
 var tokens = require('../tokens');
 var graph = require('../graph');
+var runner = require('../runner');
 var router = express.Router();
 
 /* GET /presence */
@@ -10,7 +11,8 @@ router.get('/',
     try {
       var accessToken = await tokens.getAccessToken(req);
 
-      await graph.getPresence(accessToken, req);
+      var presence = await graph.getPresence(accessToken, req);
+      runner.processPresence(presence);
       res.render('presence');
     } catch (err) {
       console.error(`Error querying presence: ${err}`);
